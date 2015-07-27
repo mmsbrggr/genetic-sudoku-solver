@@ -13,6 +13,7 @@ package sudoku;
  * Represents a value unit
  */
 interface Unit {
+
     /**
      * Inserts a number into a block
      * @param position The position at which the number gets inserted - must exist
@@ -39,4 +40,11 @@ interface Unit {
      * @return the number of occurrences each number between the minimum and the maximum must have
      */
     public int getOccurrences();
+
+    /**
+     * Returns a readable string representation
+     * @param blockSize The number of values after which a separator gets placed
+     * @return a String representation of the block
+     */
+    public String print(int blockSize);
 }
