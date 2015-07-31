@@ -15,11 +15,17 @@ package sudoku;
 interface Unit {
 
     /**
-     * Inserts a number into a block
+     * Inserts a number into a unit
      * @param position The position at which the number gets inserted - must exist
      * @param number The number to insert
      */
-    public void write(int position, int number) throws NotAllowedValueException;
+    public void write(int position, int number);
+
+    /**
+     * Reads a number from the unit
+     * @param position The position to read the number from - must exist
+     */
+    public int read(int position);
 
     /**
      * @return The number of conflicts within the unit
@@ -40,6 +46,11 @@ interface Unit {
      * @return the number of occurrences each number between the minimum and the maximum must have
      */
     public int getOccurrences();
+
+    /**
+     * @return the unit in a array representation
+     */
+    public int[] toArray();
 
     /**
      * Returns a readable string representation

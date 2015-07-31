@@ -16,9 +16,11 @@ public class SudokuGrid implements Grid {
 
     private final int blockSize;
     private int conflicts;
-    private Unit[] rows;
-    private Unit[] columns;
-    private Unit[] blocks;
+    private int countEmptyFields;
+    private int sideLength;
+    private SudokuUnit[] rows;
+    private SudokuUnit[] columns;
+    private SudokuUnit[] blocks;
 
     /**
      * The main constructor
@@ -26,18 +28,60 @@ public class SudokuGrid implements Grid {
      */
     public SudokuGrid(int blockSize) {
         this.blockSize = blockSize;
-        this.rows = new Unit[blockSize * blockSize];
-        this.columns = new Unit[blockSize * blockSize];
-        this.blocks = new Unit[blockSize * blockSize];
+        this.rows = new SudokuUnit[blockSize * blockSize];
+        this.columns = new SudokuUnit[blockSize * blockSize];
+        this.blocks = new SudokuUnit[blockSize * blockSize];
+        this.sideLength = this.blockSize * this.blockSize;
+        this.countEmptyFields = this.sideLength * this.sideLength;
         this.fillBlank(this.rows);
         this.fillBlank(this.columns);
         this.fillBlank(this.blocks);
     }
 
+    /**
+     * Copy constructor
+     * @param other the SudokuGrid to copy
+     */
+    public SudokuGrid(SudokuGrid other) {
+        this.blockSize = other.getBlockSize();
+        this.sideLength = other.getSideLength();
+        this.conflicts = other.getConflicts();
+        this.countEmptyFields = other.countEmptyFields;
+        this.rows = this.copyUnits(other.rows);
+        this.columns = this.copyUnits(other.columns);
+        this.blocks = this.copyUnits(other.blocks);
+    }
+
+    /**
+     * Makes a deep copy of a SudokuUnit-array
+     * @param other the unit-array to copy
+     * @return a copy of the passed SudokuUnit-array
+     */
+    private SudokuUnit[] copyUnits(SudokuUnit[] other) {
+        SudokuUnit[] copy = new SudokuUnit[other.length];
+        for (int i = 0; i < other.length; i++) {
+            copy[i] = new SudokuUnit(other[i]);
+        }
+        return copy;
+    }
+
+    /**
+     * Fills a unit array with blank sudoku-units
+     * @param arr the array to fill
+     */
+    private void fillBlank(Unit[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = new SudokuUnit(1, this.getSideLength(), 1);
+        }
+    }
+
     @Override
-    public void write(int x, int y, int number) throws NotAllowedValueException {
+    public void write(int x, int y, int number) {
         int blockNum = ((y / this.blockSize) * this.blockSize) + ((x / this.blockSize));
         int blockIndex = ((y % this.blockSize) * this.blockSize) + (x % this.blockSize);
+
+        if (this.rows[y].read(x) == 0) countEmptyFields -= 1;
+        if (number == 0) countEmptyFields += 1;
 
         this.conflicts -= this.rows[y].getConflicts();
         this.conflicts -= this.columns[x].getConflicts();
@@ -53,6 +97,11 @@ public class SudokuGrid implements Grid {
     }
 
     @Override
+    public void write(int index, int number) {
+        this.write(index % (this.getSideLength()), index / (this.getSideLength()), number);
+    }
+
+    @Override
     public int getConflicts() {
         return this.conflicts;
     }
@@ -62,14 +111,9 @@ public class SudokuGrid implements Grid {
         return this.blockSize;
     }
 
-    /**
-     * Fills a unit array with blank sudoku-units
-     * @param arr the array to fill
-     */
-    private void fillBlank(Unit[] arr) {
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = new SudokuUnit(1, this.blockSize * this.blockSize, 1);
-        }
+    @Override
+    public int getSideLength() {
+        return this.sideLength;
     }
 
     @Override
@@ -85,5 +129,21 @@ public class SudokuGrid implements Grid {
             value += this.rows[i].print(this.blockSize) + '\n';
         }
         return value + line;
+    }
+
+    @Override
+    public int[] getEmptyFields() {
+        int[] emptyFields = new int[this.countEmptyFields];
+        int index = 0;
+        for (int rowIndex = 0; rowIndex < this.rows.length; rowIndex++) {
+            int[] row = this.rows[rowIndex].toArray();
+            for (int colIndex = 0; colIndex < row.length; colIndex++) {
+                if (row[colIndex] == 0) {
+                    emptyFields[index] = (rowIndex * this.getSideLength()) + colIndex;
+                    index += 1;
+                }
+            }
+        }
+        return emptyFields;
     }
 }
