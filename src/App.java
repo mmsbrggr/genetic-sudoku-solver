@@ -9,6 +9,7 @@
 
 import nature.*;
 import problem.SudokuPopulation;
+import problem.SudokuSolution;
 import sudoku.*;
 
 public class App {
@@ -44,11 +45,11 @@ public class App {
         grid.write(4, 8, 7);
         grid.write(5, 8, 2);
 
-        Population population = new SudokuPopulation(1000, grid);
+        SudokuPopulation population = new SudokuPopulation(100, grid);
         Crossover crossover = new SinglePointCrossover();
         Selection selection = new TournamentSelection(2);
-        World world = new World(population, selection, crossover, 0.05);
-        SudokuGrid solution = (SudokuGrid) world.getSolution();
+        World<SudokuSolution> world = new World<>(population, selection, crossover, 0.05);
+        SudokuGrid solution = world.getSolution();
         System.out.print(solution);
     }
 }

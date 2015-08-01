@@ -10,7 +10,6 @@
 
 package problem;
 
-import nature.Organism;
 import nature.Population;
 import sudoku.SudokuGrid;
 
@@ -20,7 +19,7 @@ import java.util.NoSuchElementException;
 /**
  * Represents a population of sudoku-solutions
  */
-public class SudokuPopulation implements Population {
+public class SudokuPopulation implements Population<SudokuSolution> {
 
     private final int size;
     private SudokuSolution[] population;
@@ -48,7 +47,7 @@ public class SudokuPopulation implements Population {
     }
 
     @Override
-    public Iterator<Organism> iterator() {
+    public Iterator<SudokuSolution> iterator() {
         return new PopulationIterator(this.population);
     }
 
@@ -58,7 +57,7 @@ public class SudokuPopulation implements Population {
     }
 
     @Override
-    public Organism getRandomOrganism() {
+    public SudokuSolution getRandomOrganism() {
         return this.population[((int) (Math.random() * this.population.length))];
     }
 
@@ -67,16 +66,16 @@ public class SudokuPopulation implements Population {
         return new SudokuPopulation(this.getSize(), this.problem);
     }
 
-    private static final class PopulationIterator implements Iterator<Organism> {
+    private static final class PopulationIterator implements Iterator<SudokuSolution> {
         int cursor = 0;
-        Organism[] population;
+        SudokuSolution[] population;
 
-        PopulationIterator(Organism[] population) {
+        PopulationIterator(SudokuSolution[] population) {
             this.population = population;
         }
 
         @Override
-        public Organism next() {
+        public SudokuSolution next() {
             if (!this.hasNext()) {
                 throw new NoSuchElementException();
             }

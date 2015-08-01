@@ -12,7 +12,7 @@ package nature;
 /**
  * Represents a population of organisms
  */
-public interface Population extends Iterable<Organism> {
+public interface Population<T extends Organism> extends Iterable<T> {
 
     /**
      * @return the size of the population
@@ -22,10 +22,10 @@ public interface Population extends Iterable<Organism> {
     /**
      * @return a random organism from the population
      */
-    public Organism getRandomOrganism();
+    public T getRandomOrganism();
 
     /**
      * @return a population of the same size an similar organisms
      */
-    public Population getEqual();
+    public Population<T> getEqual();
 }

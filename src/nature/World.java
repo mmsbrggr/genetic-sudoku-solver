@@ -9,22 +9,21 @@
 
 package nature;
 
-import java.util.Iterator;
-
 /**
  * Represents the world. Holds a population of organisms and evolves them
+ * @param <T> the organism type
  */
-public final class World {
+public final class World<T extends Organism> {
 
-    private Population oldPopulation;
-    private Population population;
+    private Population<T> oldPopulation;
+    private Population<T> population;
     private Selection selection;
     private Crossover crossover;
     private double mutationRate;
-    private Organism best;
+    private T best;
 
 
-    public World(Population population, Selection selection, Crossover crossover, double mutationRate) {
+    public World(Population<T> population, Selection selection, Crossover crossover, double mutationRate) {
         this.population = population;
         this.oldPopulation = population.getEqual();
         this.best = this.population.getRandomOrganism();
@@ -33,20 +32,15 @@ public final class World {
         this.mutationRate = mutationRate;
     }
 
-    public Organism getSolution() {
-        for (int i = 0; i < 100000; i++) {
+    public T getSolution() {
+        for (int i = 0; i < 1000; i++) {
             this.evolve();
-            if (i % 1000 == 0) {
-                System.out.println(this.best.getFitness());
-            }
         }
         return this.best;
     }
 
     private void evolve() {
-        Iterator<Organism> iterator = this.oldPopulation.iterator();
-        while(iterator.hasNext()) {
-            Organism sculpture = iterator.next();
+        for (T sculpture : this.oldPopulation) {
             if (sculpture != this.best) {
                 Organism[] parents = {this.selection.select(this.population), this.selection.select(this.population)};
                 this.crossover.cross(sculpture, parents);
