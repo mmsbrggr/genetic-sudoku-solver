@@ -20,12 +20,13 @@ public interface Population<T extends Organism> extends Iterable<T> {
     public int getSize();
 
     /**
-     * @return a random organism from the population
+     * @return the avg fitness of the population
      */
-    public T getRandomOrganism();
+    public int getAvgFitness();
 
     /**
-     * @return a population of the same size an similar organisms
+     * Adds an organism to the population
+     * @param organism the organism to add
      */
-    public Population<T> getEqual();
+    public void add(T organism);
 }

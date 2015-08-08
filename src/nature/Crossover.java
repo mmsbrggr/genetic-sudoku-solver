@@ -15,9 +15,18 @@ package nature;
 public interface Crossover {
 
     /**
-     * Crosses multiple organisms into one organsim
-     * @param sculpture the organism to change the dna from
-     * @param organisms organisms which get combined into one
+     * @return true iff enough parents were added
      */
-    public void cross(Organism sculpture, Organism[] organisms);
+    public boolean hasEnoughParents();
+
+    /**
+     * Adds a parent to the crossover
+     * @param parent the parent which gets used to create a new organism
+     */
+    public void addParent(Gene parent);
+
+    /**
+     * Crosses the added parents to a new gene
+     */
+    public Gene cross();
 }

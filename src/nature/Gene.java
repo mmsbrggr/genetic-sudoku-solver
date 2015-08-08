@@ -20,8 +20,19 @@ public final class Gene<T> implements Iterable<T> {
 
     private ArrayList<T> representation;
 
+    /**
+     * Main constructor
+     */
     public Gene() {
         this.representation = new ArrayList<>();
+    }
+
+    /**
+     * copy constructor
+     * @param other the gene to copy
+     */
+    public Gene(Gene<T> other) {
+        this.representation = new ArrayList<>(other.representation);
     }
 
     /**

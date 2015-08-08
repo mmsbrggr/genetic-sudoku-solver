@@ -13,8 +13,8 @@ package problem;
 import nature.Population;
 import sudoku.SudokuGrid;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Represents a population of sudoku-solutions
@@ -22,33 +22,39 @@ import java.util.NoSuchElementException;
 public class SudokuPopulation implements Population<SudokuSolution> {
 
     private final int size;
-    private SudokuSolution[] population;
-    private SudokuGrid problem;
+    private ArrayList<SudokuSolution> population;
+    private int avgFitness;
 
     /**
      * Main constructor creates a random population of a given size for a given problem
-     * @param size the population size
-     * @param problem the problem for which a population should get created
+     *
+     * @param size    the population size
      */
-    public SudokuPopulation(int size, SudokuGrid problem) {
+    public SudokuPopulation(int size) {
         this.size = size;
-        this.problem = problem;
-        this.population = new SudokuSolution[this.size];
-        this.createRandom();
+        this.population = new ArrayList<>();
     }
 
     /**
      * Fills the population with random solutions
+     * @param problem the unsolved sudoku-grid
      */
-    private void createRandom() {
+    public void createRandom(SudokuGrid problem) {
         for (int i = 0; i < this.getSize(); i++) {
-            this.population[i] = new SudokuSolution(this.problem);
+            SudokuSolution solution = new SudokuSolution(problem);
+            this.add(solution);
         }
     }
 
     @Override
+    public void add(SudokuSolution solution) {
+        this.population.add(solution);
+        this.avgFitness = solution.getFitness() / this.size;
+    }
+
+    @Override
     public Iterator<SudokuSolution> iterator() {
-        return new PopulationIterator(this.population);
+        return this.population.iterator();
     }
 
     @Override
@@ -57,40 +63,7 @@ public class SudokuPopulation implements Population<SudokuSolution> {
     }
 
     @Override
-    public SudokuSolution getRandomOrganism() {
-        return this.population[((int) (Math.random() * this.population.length))];
-    }
-
-    @Override
-    public Population getEqual() {
-        return new SudokuPopulation(this.getSize(), this.problem);
-    }
-
-    private static final class PopulationIterator implements Iterator<SudokuSolution> {
-        int cursor = 0;
-        SudokuSolution[] population;
-
-        PopulationIterator(SudokuSolution[] population) {
-            this.population = population;
-        }
-
-        @Override
-        public SudokuSolution next() {
-            if (!this.hasNext()) {
-                throw new NoSuchElementException();
-            }
-            this.cursor += 1;
-            return this.population[this.cursor - 1];
-        }
-
-        @Override
-        public boolean hasNext() {
-            return this.cursor < this.population.length;
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
+    public int getAvgFitness() {
+        return this.avgFitness;
     }
 }
