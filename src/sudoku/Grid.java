@@ -48,4 +48,14 @@ public interface Grid {
      * @return the length of one side of the grid
      */
     public int getSideLength();
+
+    /**
+     * @return the minimum valid value
+     */
+    public int getValidMin();
+
+    /**
+     * @return the maximum valid value
+     */
+    public int getValidMax();
 }

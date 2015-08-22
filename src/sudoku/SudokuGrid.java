@@ -76,6 +76,16 @@ public class SudokuGrid implements Grid {
     }
 
     @Override
+    public int getValidMin() {
+        return 1;
+    }
+
+    @Override
+    public int getValidMax() {
+        return this.getBlockSize() * this.getBlockSize();
+    }
+
+    @Override
     public void write(int x, int y, int number) {
         int blockNum = ((y / this.blockSize) * this.blockSize) + ((x / this.blockSize));
         int blockIndex = ((y % this.blockSize) * this.blockSize) + (x % this.blockSize);
