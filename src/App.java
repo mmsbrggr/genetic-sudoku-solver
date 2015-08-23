@@ -7,6 +7,11 @@
  * with this source code in the file LICENSE.
  */
 
+import problem.Problem;
+import problem.World;
+import problem.crossover.UniformCrossover;
+import problem.habitat.Individual;
+import problem.selection.RouletteWheelSelection;
 import sudoku.*;
 
 public class App {
@@ -42,6 +47,21 @@ public class App {
         grid.write(4, 8, 7);
         grid.write(5, 8, 2);
 
-        System.out.print(grid);
+        Problem problem = new Problem(grid);
+
+        System.out.println(problem.getGrid());
+
+        World world = new World(
+                problem,
+                new RouletteWheelSelection(),
+                new UniformCrossover(8),
+                100,
+                0.1
+        );
+
+        Individual solution = world.findSolution();
+        System.out.println(solution);
+        System.out.println(solution.getConflicts());
+        System.out.println(solution.getFitness());
     }
 }

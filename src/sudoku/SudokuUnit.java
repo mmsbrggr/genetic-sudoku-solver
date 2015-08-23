@@ -79,8 +79,10 @@ final class SudokuUnit implements Unit {
             this.setUsages(oldNumber, this.getUsages(oldNumber) - 1);
         }
         this.representation[position] = number;
-        this.setUsages(number, this.getUsages(number) + 1);
-        this.increaseConflict(number);
+        if (number >= this.getRangeMin()) {
+            this.setUsages(number, this.getUsages(number) + 1);
+            this.increaseConflict(number);
+        }
     }
 
     @Override
