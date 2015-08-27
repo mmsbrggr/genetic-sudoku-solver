@@ -50,7 +50,7 @@ public class App {
 
         Registry.getInstance().set("mutation-rate", 0.1);
         Registry.getInstance().set("population-size", 100);
-        Registry.getInstance().set("crossover", new UniformCrossover(8));
+        Registry.getInstance().set("crossover", new UniformCrossover(5));
         Registry.getInstance().set("selection", new RouletteWheelSelection());
         Registry.getInstance().set("problem", new Problem(grid));
         Registry.getInstance().set("grid", grid);
