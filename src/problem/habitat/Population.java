@@ -10,6 +10,7 @@
 package problem.habitat;
 
 import problem.Problem;
+import problem.registry.Registry;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -19,19 +20,13 @@ import java.util.TreeSet;
  */
 public class Population implements Iterable<Individual> {
 
-    private int size;
     private double totalFitness;
-    private Problem problem;
     private TreeSet<Individual> representation;
 
     /**
      * Default constructor. Creates a population with random individuals
-     * @param size the size of the population
-     * @param problem the problem to create a population for
      */
-    public Population(int size, Problem problem) {
-        this.size = size;
-        this.problem = problem;
+    public Population() {
         this.totalFitness = 0.0;
         this.representation = new TreeSet<>();
     }
@@ -40,8 +35,8 @@ public class Population implements Iterable<Individual> {
      * Fills the population with random individuals
      */
     public void createRandom() {
-        for (int i = 0; i < this.size; i++) {
-            this.add(new Individual(this.problem));
+        for (int i = 0; i < (int) Registry.getInstance().get("population-size"); i++) {
+            this.add(new Individual());
         }
     }
 
@@ -72,19 +67,12 @@ public class Population implements Iterable<Individual> {
     }
 
     /**
-     * @return the population's size
-     */
-    public int getSize() {
-        return this.size;
-    }
-
-    /**
      * @param number number of individuals to return
      * @return returns the the best individuals
      */
     public Individual[] get(int number) {
         //TODO refactor: make cleaner
-        if (number > this.getSize()) {
+        if (number > (int) Registry.getInstance().get("population-size")) {
             throw new IllegalArgumentException("Cannot return more individuals than in population.");
         }
         Individual[] elite = new Individual[number];

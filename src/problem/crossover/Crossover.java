@@ -35,8 +35,7 @@ public interface Crossover {
 
     /**
      * Executes the crossover
-     * @param mutationRate the likelihood that a chromosome mutates
      * @return the changed sculpture
      */
-    public Individual cross(double mutationRate);
+    public Individual cross();
 }

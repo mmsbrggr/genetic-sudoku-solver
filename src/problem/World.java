@@ -12,6 +12,7 @@ package problem;
 import problem.crossover.Crossover;
 import problem.habitat.Individual;
 import problem.habitat.Population;
+import problem.registry.Registry;
 import problem.selection.Selection;
 
 /**
@@ -20,29 +21,20 @@ import problem.selection.Selection;
  */
 public class World {
 
-    Problem problem;
-    Selection selection;
-    Crossover crossover;
     Population population;
     Population backupPopulation;
-    double mutationRate;
+    Crossover crossover;
+    Selection selection;
 
     /**
      * Default constructor
-     * @param problem The problem to solve
-     * @param selection The selection process to use
-     * @param crossover The crossover process to use
-     * @param size The population size
-     * @param mutationRate rate of mutation
      */
-    public World(Problem problem, Selection selection, Crossover crossover, int size, double mutationRate) {
-        this.problem = problem;
-        this.selection = selection;
-        this.crossover = crossover;
-        this.mutationRate = mutationRate;
-        this.population = new Population(size, this.problem);
+    public World() {
+        this.crossover = (Crossover) Registry.getInstance().get("crossover");
+        this.selection = (Selection) Registry.getInstance().get("selection");
+        this.population = new Population();
         this.population.createRandom();
-        this.backupPopulation = new Population(size, this.problem);
+        this.backupPopulation = new Population();
         this.backupPopulation.createRandom();
     }
 
@@ -55,14 +47,14 @@ public class World {
     }
 
     private void evolvePopulation() {
-        Population newPopulation = new Population(this.population.getSize(), this.problem);
+        Population newPopulation = new Population();
         newPopulation.add(this.population.get(10)); //TODO: make cleaner
         int counter = 10;
         for (Individual sculpture : this.backupPopulation) {
             this.crossover.setSculpture(sculpture);
             while (this.crossover.needsParent()) this.crossover.addParent(this.selection.select(this.population));
-            newPopulation.add(this.crossover.cross(this.mutationRate));
-            if (++counter == this.population.getSize()) break;
+            newPopulation.add(this.crossover.cross());
+            if (++counter == (int) Registry.getInstance().get("population-size")) break;
         }
         this.backupPopulation = this.population;
         this.population = newPopulation;

@@ -10,6 +10,7 @@
 package problem.habitat;
 
 import problem.Problem;
+import problem.registry.Registry;
 import sudoku.SudokuGrid;
 
 import java.util.Arrays;
@@ -25,11 +26,10 @@ public class Individual extends SudokuGrid implements Comparable<Individual> {
     /**
      * Default constructor. Takes an unfinished grid
      * and fills it randomly.
-     * @param problem The problem to solve
      */
-    public Individual(Problem problem) {
-        super(problem.getGrid());
-        this.problem = problem;
+    public Individual() {
+        super((SudokuGrid) Registry.getInstance().get("grid"));
+        this.problem = (Problem) Registry.getInstance().get("problem");
         this.gene = new int[this.problem.getVariableFields().length];
         this.fillRandom();
     }

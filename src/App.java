@@ -11,6 +11,7 @@ import problem.Problem;
 import problem.World;
 import problem.crossover.UniformCrossover;
 import problem.habitat.Individual;
+import problem.registry.Registry;
 import problem.selection.RouletteWheelSelection;
 import sudoku.*;
 
@@ -47,17 +48,14 @@ public class App {
         grid.write(4, 8, 7);
         grid.write(5, 8, 2);
 
-        Problem problem = new Problem(grid);
+        Registry.getInstance().set("mutation-rate", 0.1);
+        Registry.getInstance().set("population-size", 100);
+        Registry.getInstance().set("crossover", new UniformCrossover(8));
+        Registry.getInstance().set("selection", new RouletteWheelSelection());
+        Registry.getInstance().set("problem", new Problem(grid));
+        Registry.getInstance().set("grid", grid);
 
-        System.out.println(problem.getGrid());
-
-        World world = new World(
-                problem,
-                new RouletteWheelSelection(),
-                new UniformCrossover(8),
-                100,
-                0.1
-        );
+        World world = new World();
 
         Individual solution = world.findSolution();
         System.out.println(solution);

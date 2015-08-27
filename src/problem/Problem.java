@@ -21,17 +21,17 @@ import java.util.Map;
  */
 public class Problem {
 
-    private SudokuGrid problem;
+    private SudokuGrid grid;
     private int[] variableFields;
     private Map<Integer, Integer[]> validNumbers;
 
     /**
      * Default constructor. Takes an unfinished sudoku-grid and
      * preprocesses different things
-     * @param problem The unfinished sudoku-grid which represents the problem
+     * @param grid The unfinished sudoku-grid which represents the problem
      */
-    public Problem(SudokuGrid problem) {
-        this.problem = problem;
+    public Problem(SudokuGrid grid) {
+        this.grid = grid;
         this.preprocess();
     }
 
@@ -40,13 +40,6 @@ public class Problem {
      */
     public int[] getVariableFields() {
         return this.variableFields;
-    }
-
-    /**
-     * @return the unfinished sudoku-grid
-     */
-    public SudokuGrid getGrid() {
-        return this.problem;
     }
 
     /**
@@ -69,7 +62,7 @@ public class Problem {
      * Calculates an array of indexes of fields which have to be filled
      */
     private void preprocessVariableFields() {
-        this.variableFields = this.problem.getEmptyFields();
+        this.variableFields = this.grid.getEmptyFields();
     }
 
     /**
@@ -85,15 +78,15 @@ public class Problem {
             this.validNumbers = new Hashtable<>();
             for (int index : this.getVariableFields()) {
                 ArrayList<Integer> validNumbers = new ArrayList<>();
-                for (int i = this.problem.getValidMin(); i <= this.problem.getValidMax(); i++) {
-                    this.problem.write(index, i);
-                    if (this.problem.getConflicts() == 0) {
+                for (int i = this.grid.getValidMin(); i <= this.grid.getValidMax(); i++) {
+                    this.grid.write(index, i);
+                    if (this.grid.getConflicts() == 0) {
                         validNumbers.add(i);
                     }
-                    this.problem.write(index, 0);
+                    this.grid.write(index, 0);
                 }
                 if (validNumbers.size() == 1) {
-                    this.problem.write(index, validNumbers.get(0));
+                    this.grid.write(index, validNumbers.get(0));
                     gridChanged = true;
                 }
                 this.validNumbers.put(index, validNumbers.toArray(new Integer[validNumbers.size()]));

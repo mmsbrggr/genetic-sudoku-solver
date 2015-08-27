@@ -9,8 +9,8 @@
 
 package problem.crossover;
 
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import problem.habitat.Individual;
+import problem.registry.Registry;
 
 /**
  * Crosses multiple parents to one individual, where for each chromosome
@@ -51,12 +51,12 @@ public class UniformCrossover implements Crossover {
     }
 
     @Override
-    public Individual cross(double mutationRate) {
+    public Individual cross() {
         if (this.needsParent()) {
             throw new RuntimeException("Uniformselection needs more parents before cross can be executed");
         }
         for (int i = 0; i < this.sculpture.getGene().length; i++) {
-            if (Math.random() < mutationRate) {
+            if (Math.random() < (double) Registry.getInstance().get("mutation-rate")) {
                 this.sculpture.writeChromosomeRandom(i);
             } else {
                 int randomIndex = (int) (Math.random() * this.parents.length);
