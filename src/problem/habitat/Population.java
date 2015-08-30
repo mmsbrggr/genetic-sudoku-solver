@@ -9,7 +9,6 @@
 
 package problem.habitat;
 
-import problem.Problem;
 import problem.registry.Registry;
 
 import java.util.Iterator;
@@ -71,15 +70,14 @@ public class Population implements Iterable<Individual> {
      * @return returns the the best individuals
      */
     public Individual[] get(int number) {
-        //TODO refactor: make cleaner
         if (number > (int) Registry.getInstance().get("population-size")) {
             throw new IllegalArgumentException("Cannot return more individuals than in population.");
         }
         Individual[] elite = new Individual[number];
         int index = 0;
         for (Individual individual : this) {
+            if (index++ == elite.length) break;
             elite[index] = new Individual(individual);
-            if (++index == elite.length) break;
         }
         return elite;
     }

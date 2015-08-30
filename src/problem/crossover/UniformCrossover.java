@@ -56,12 +56,8 @@ public class UniformCrossover implements Crossover {
             throw new RuntimeException("Uniformselection needs more parents before cross can be executed");
         }
         for (int i = 0; i < this.sculpture.getGene().length; i++) {
-            if (Math.random() < (double) Registry.getInstance().get("mutation-rate")) {
-                this.sculpture.writeChromosomeRandom(i);
-            } else {
-                int randomIndex = (int) (Math.random() * this.parents.length);
-                this.sculpture.writeChromosome(i, this.parents[randomIndex].readChromosome(i));
-            }
+            int randomIndex = (int) (Math.random() * this.parents.length);
+            this.sculpture.writeChromosome(i, this.parents[randomIndex].readChromosome(i));
         }
         this.parentIndex = 0;
         return this.sculpture;
