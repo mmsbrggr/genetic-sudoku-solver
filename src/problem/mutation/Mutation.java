@@ -21,5 +21,5 @@ public interface Mutation {
      * @param individual The individual to mutate
      * @return the mutated individual
      */
-    public Individual mutate(Individual individual);
+    Individual mutate(Individual individual);
 }

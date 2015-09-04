@@ -20,42 +20,69 @@ public interface Grid {
      * @param y the y value to write in
      * @param number the number to write into the (x,y)-position
      */
-    public void write(int x, int y, int number);
+    void write(int x, int y, int number);
 
     /**
      * Writes a number into the grid
      * @param index the index starting from left to right and top-down
      * @param number the number to write
      */
-    public void write(int index, int number);
+    void write(int index, int number);
+
+    /**
+     * @param index the index to read from
+     * @return returns the number in the grid for a given index
+     */
+    int read(int index);
 
     /**
      * @return The number of conflicts within the whole grid (row, column and blocks get added together)
      */
-    public int getConflicts();
+    int getConflicts();
 
     /**
      * @return an array with the indexes of the empty fields. The indexes go from left to right and top-down
      */
-    public int[] getEmptyFields();
+    int[] getEmptyFields();
 
     /**
      * @return the size of a block in a grid
      */
-    public int getBlockSize();
+    int getBlockSize();
 
     /**
      * @return the length of one side of the grid
      */
-    public int getSideLength();
+    int getSideLength();
 
     /**
      * @return the minimum valid value
      */
-    public int getValidMin();
+    int getValidMin();
 
     /**
      * @return the maximum valid value
      */
-    public int getValidMax();
+    int getValidMax();
+
+    /**
+     * @param row the index of the row
+     * @param position the position in the row
+     * @return the grid index by a given row and the position in that row
+     */
+    int getIndexByRow(int row, int position);
+
+    /**
+     * @param column the index of the column
+     * @param position the position in the column
+     * @return the grid index by a given column and the position in that column
+     */
+    int getIndexByColumn(int column, int position);
+
+    /**
+     * @param block the index of the block
+     * @param position the position in the block
+     * @return the grid index by a given block and the position in that block
+     */
+    int getIndexByBlock(int block, int position);
 }

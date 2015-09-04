@@ -20,22 +20,22 @@ public interface Crossover {
      * Adds the sculpture which gets used to write the new genes on
      * @param sculpture the individual to use as the sculpture
      */
-    public void setSculpture(Individual sculpture);
+    void setSculpture(Individual sculpture);
 
     /**
      * Adds an individual which acts as a parent in the crossover
      * @param individual a parent
      */
-    public void addParent(Individual individual);
+    void addParent(Individual individual);
 
     /**
      * @return true iff the crossover needs more parents
      */
-    public boolean needsParent();
+    boolean needsParent();
 
     /**
      * Executes the crossover
      * @return the changed sculpture
      */
-    public Individual cross();
+    Individual cross();
 }

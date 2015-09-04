@@ -22,5 +22,5 @@ public interface Selection {
      * @param population the population to select from
      * @return the selected individual
      */
-    public Individual select(Population population);
+    Individual select(Population population);
 }

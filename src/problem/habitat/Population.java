@@ -75,9 +75,11 @@ public class Population implements Iterable<Individual> {
         }
         Individual[] elite = new Individual[number];
         int index = 0;
-        for (Individual individual : this) {
-            if (index++ == elite.length) break;
-            elite[index] = new Individual(individual);
+        if (elite.length > 0) {
+            for (Individual individual : this) {
+                elite[index] = new Individual(individual);
+                if (++index == elite.length) break;
+            }
         }
         return elite;
     }

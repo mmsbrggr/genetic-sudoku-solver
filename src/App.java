@@ -11,7 +11,7 @@ import problem.Problem;
 import problem.World;
 import problem.crossover.UniformCrossover;
 import problem.habitat.Individual;
-import problem.mutation.SwapMutation;
+import problem.mutation.SwapRowMutation;
 import problem.registry.Registry;
 import problem.selection.RouletteWheelSelection;
 import sudoku.*;
@@ -49,14 +49,14 @@ public class App {
         grid.write(4, 8, 7);
         grid.write(5, 8, 2);
 
-        Registry.getInstance().set("elitism-rate", 0.0);
+        Registry.getInstance().set("elitism-rate", 0.001);
         Registry.getInstance().set("mutation-rate", 0.1);
-        Registry.getInstance().set("population-size", 1000);
-        Registry.getInstance().set("crossover", new UniformCrossover(5));
-        Registry.getInstance().set("selection", new RouletteWheelSelection());
-        Registry.getInstance().set("mutation", new SwapMutation());
-        Registry.getInstance().set("problem", new Problem(grid));
+        Registry.getInstance().set("population-size", 800);
         Registry.getInstance().set("grid", grid);
+        Registry.getInstance().set("problem", new Problem(grid));
+        Registry.getInstance().set("crossover", new UniformCrossover(2));
+        Registry.getInstance().set("selection", new RouletteWheelSelection());
+        Registry.getInstance().set("mutation", new SwapRowMutation());
 
         World world = new World();
 

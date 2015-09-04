@@ -22,6 +22,7 @@ final class SudokuUnit implements Unit {
     private int conflicts;
     private int[] representation;
     private int[] usages;
+    private int[] gridIndices;
 
     /**
      * The main constructor
@@ -35,6 +36,7 @@ final class SudokuUnit implements Unit {
         this.occurrences = occurrences;
         this.representation = new int[(rangeMax - rangeMin + 1) * this.occurrences];
         this.usages = new int[rangeMax - rangeMin + 1];
+        this.gridIndices = new int[rangeMax - rangeMin + 1];
         this.conflicts = 0;
     }
 
@@ -49,6 +51,7 @@ final class SudokuUnit implements Unit {
         this.conflicts = other.getConflicts();
         this.representation = Arrays.copyOf(other.representation, other.representation.length);
         this.usages = Arrays.copyOf(other.usages, other.usages.length);
+        this.gridIndices = other.gridIndices;
     }
 
     @Override
@@ -69,6 +72,11 @@ final class SudokuUnit implements Unit {
     @Override
     public int getOccurrences() {
         return this.occurrences;
+    }
+
+    @Override
+    public int[] getGridIndices() {
+        return this.gridIndices;
     }
 
     @Override
@@ -106,6 +114,11 @@ final class SudokuUnit implements Unit {
     @Override
     public int[] toArray() {
         return this.representation;
+    }
+
+    @Override
+    public void setGridIndex(int position, int index) {
+        this.gridIndices[position] = index;
     }
 
     /**

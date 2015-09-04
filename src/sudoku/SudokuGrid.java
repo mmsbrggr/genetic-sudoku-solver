@@ -72,6 +72,9 @@ public class SudokuGrid implements Grid {
     private void fillBlank(Unit[] arr) {
         for (int i = 0; i < arr.length; i++) {
             arr[i] = new SudokuUnit(1, this.getSideLength(), 1);
+            for (int x = 0; x < this.getSideLength(); x++) {
+
+            }
         }
     }
 
@@ -107,8 +110,13 @@ public class SudokuGrid implements Grid {
     }
 
     @Override
+    public int read(int index) {
+        return this.rows[index / (this.getSideLength())].read(index % this.getSideLength());
+    }
+
+    @Override
     public void write(int index, int number) {
-        this.write(index % (this.getSideLength()), index / (this.getSideLength()), number);
+        this.write(index % this.getSideLength(), index / this.getSideLength(), number);
     }
 
     @Override
@@ -155,5 +163,23 @@ public class SudokuGrid implements Grid {
             }
         }
         return emptyFields;
+    }
+
+    @Override
+    public int getIndexByRow(int row, int position) {
+        return row * this.getSideLength() + position;
+    }
+
+    @Override
+    public int getIndexByColumn(int column, int position) {
+        return position * this.getSideLength() + column;
+    }
+
+    @Override
+    public int getIndexByBlock(int block, int position) {
+        return ((block / this.getBlockSize()) * this.getSideLength() * this.getBlockSize()) +
+                (position / this.getBlockSize()) * this.getSideLength() +
+                ((block % this.getBlockSize()) * this.getBlockSize()) +
+                (position % this.getBlockSize());
     }
 }
