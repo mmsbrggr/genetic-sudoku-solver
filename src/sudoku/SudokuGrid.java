@@ -9,6 +9,9 @@
 
 package sudoku;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Represents a sudoku-grid
  */
@@ -72,9 +75,6 @@ public class SudokuGrid implements Grid {
     private void fillBlank(Unit[] arr) {
         for (int i = 0; i < arr.length; i++) {
             arr[i] = new SudokuUnit(1, this.getSideLength(), 1);
-            for (int x = 0; x < this.getSideLength(); x++) {
-
-            }
         }
     }
 
@@ -101,8 +101,11 @@ public class SudokuGrid implements Grid {
         this.conflicts -= this.blocks[blockNum].getConflicts();
 
         this.rows[y].write(x, number);
+        this.rows[y].setGridIndex(x, this.getIndexByRow(y, x)); //TODO: do not implement here
         this.columns[x].write(y, number);
+        this.columns[x].setGridIndex(y, this.getIndexByColumn(x, y)); //TODO: do not implement here
         this.blocks[blockNum].write(blockIndex, number);
+        this.blocks[blockNum].setGridIndex(blockIndex, this.getIndexByBlock(blockNum, blockIndex)); //TODO: do not implement here
 
         this.conflicts += this.rows[y].getConflicts();
         this.conflicts += this.columns[x].getConflicts();
@@ -150,15 +153,13 @@ public class SudokuGrid implements Grid {
     }
 
     @Override
-    public int[] getEmptyFields() {
-        int[] emptyFields = new int[this.countEmptyFields];
-        int index = 0;
+    public Set<Integer> getEmptyFields() {
+        Set<Integer> emptyFields = new HashSet<>();
         for (int rowIndex = 0; rowIndex < this.rows.length; rowIndex++) {
             int[] row = this.rows[rowIndex].toArray();
             for (int colIndex = 0; colIndex < row.length; colIndex++) {
                 if (row[colIndex] == 0) {
-                    emptyFields[index] = (rowIndex * this.getSideLength()) + colIndex;
-                    index += 1;
+                    emptyFields.add((rowIndex * this.getSideLength()) + colIndex);
                 }
             }
         }
@@ -181,5 +182,36 @@ public class SudokuGrid implements Grid {
                 (position / this.getBlockSize()) * this.getSideLength() +
                 ((block % this.getBlockSize()) * this.getBlockSize()) +
                 (position % this.getBlockSize());
+    }
+
+    @Override
+    public int getRowByIndex(int index) {
+        return index / this.getSideLength();
+    }
+
+    @Override
+    public int getColumnByIndex(int index) {
+        return index % this.getSideLength();
+    }
+
+    @Override
+    public int getBlockByIndex(int index) {
+        return (this.getRowByIndex(index) / this.getBlockSize()) * this.getBlockSize() +
+                (this.getColumnByIndex(index) / this.getBlockSize());
+    }
+
+    @Override
+    public int[] getRowForIndex(int index) {
+        return this.rows[this.getRowByIndex(index)].getGridIndices();
+    }
+
+    @Override
+    public int[] getColumnForIndex(int index) {
+        return this.columns[this.getColumnByIndex(index)].getGridIndices();
+    }
+
+    @Override
+    public int[] getBlockForIndex(int index) {
+        return this.blocks[this.getBlockByIndex(index)].getGridIndices();
     }
 }

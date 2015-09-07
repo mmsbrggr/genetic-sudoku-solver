@@ -9,6 +9,9 @@
 
 package sudoku;
 
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  * Represents a value grid
  */
@@ -41,9 +44,9 @@ public interface Grid {
     int getConflicts();
 
     /**
-     * @return an array with the indexes of the empty fields. The indexes go from left to right and top-down
+     * @return a set with the indexes of the empty fields. The indexes go from left to right and top-down
      */
-    int[] getEmptyFields();
+    Set<Integer> getEmptyFields();
 
     /**
      * @return the size of a block in a grid
@@ -85,4 +88,40 @@ public interface Grid {
      * @return the grid index by a given block and the position in that block
      */
     int getIndexByBlock(int block, int position);
+
+    /**
+     * @param index the index which is contained in the returned row
+     * @return the number of the row which contains a given index
+     */
+    int getRowByIndex(int index);
+
+    /**
+     * @param index the index which is contained in the returned column
+     * @return the number of the column which contains a given index
+     */
+    int getColumnByIndex(int index);
+
+    /**
+     * @param index the index which is contained in the returned block
+     * @return the number of the block which contains a given index
+     */
+    int getBlockByIndex(int index);
+
+    /**
+     * @param index the index to return the row for
+     * @return an array of grid indices which are all in the same row as a given index
+     */
+    int[] getRowForIndex(int index);
+
+    /**
+     * @param index the index to return the column for
+     * @return an array of grid indices which are all in the same column as a given index
+     */
+    int[] getColumnForIndex(int index);
+
+    /**
+     * @param index the index to return the block for
+     * @return an array of grid indices which are all in the same block as a given index
+     */
+    int[] getBlockForIndex(int index);
 }
