@@ -49,14 +49,17 @@ public class App {
         grid.write(4, 8, 7);
         grid.write(5, 8, 2);
 
-        Registry.getInstance().set("elitism-rate", 0.002);
-        Registry.getInstance().set("mutation-rate", 0.3);
-        Registry.getInstance().set("population-size", 800);
+        Registry.getInstance().set("elitism-rate", 0.0005);
+        Registry.getInstance().set("mutation-rate", 0.2);
+        Registry.getInstance().set("population-size", 500);
         Registry.getInstance().set("grid", grid);
         Registry.getInstance().set("problem", new Problem(grid));
-        Registry.getInstance().set("crossover", new UniformCrossover(2));
+        Registry.getInstance().set("crossover", new UniformCrossover(4));
         Registry.getInstance().set("selection", new RouletteWheelSelection());
         Registry.getInstance().set("mutation", new SwapRowMutation());
+
+        System.out.println(grid);
+        System.out.println(grid.getConflicts());
 
         World world = new World();
 

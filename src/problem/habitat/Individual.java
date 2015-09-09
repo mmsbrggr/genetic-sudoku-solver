@@ -93,7 +93,7 @@ public class Individual extends SudokuGrid implements Comparable<Individual> {
      * @return the fitness of the individual
      */
     public double getFitness() {
-        return Math.pow((1.0 / (this.getConflicts() + 1)), 0.7);
+        return Math.pow((1.0 / (this.getConflicts() + 1)), 3);
     }
 
     @Override

@@ -32,14 +32,16 @@ public class SwapRowMutation implements Mutation {
         for (int i = 0; i < (int) (Math.random() * individual.getSideLength()); i++) {
             int row = (int) (Math.random() * individual.getSideLength());
             Integer[] variableFields = this.problem.getVariableFieldsForRow(row);
-            int field1 = variableFields[(int) (Math.random() * variableFields.length)];
-            for (int field : variableFields) {
-                if (individual.read(field1) != individual.read(field) &&
-                        this.problem.numberIsValidForIndex(field1, individual.read(field)) &&
-                        this.problem.numberIsValidForIndex(field, individual.read(field1))) {
-                    int tmp = individual.read(field);
-                    individual.write(field1, individual.read(field));
-                    individual.write(field, tmp);
+            if (variableFields.length > 0) {
+                int field1 = variableFields[(int) (Math.random() * variableFields.length)];
+                for (int field : variableFields) {
+                    if (individual.read(field1) != individual.read(field) &&
+                            this.problem.numberIsValidForIndex(field1, individual.read(field)) &&
+                            this.problem.numberIsValidForIndex(field, individual.read(field1))) {
+                        int tmp = individual.read(field);
+                        individual.write(field1, individual.read(field));
+                        individual.write(field, tmp);
+                    }
                 }
             }
         }

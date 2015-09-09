@@ -25,6 +25,7 @@ public class Problem {
     private Map<Integer, Integer[]> variableFieldsForColumns;
     private Map<Integer, Integer[]> variableFieldsForBlocks;
     private Map<Integer, Set<Integer>> validNumbers;
+    private Map<Integer, Integer[]> validNumbersArray;
 
     /**
      * Default constructor. Takes an unfinished sudoku-grid and
@@ -72,7 +73,7 @@ public class Problem {
      * @return array of valid numbers for a given index
      */
     public Integer[] getValidNumbersForIndex(int index) {
-        return this.validNumbers.get(index).toArray(new Integer[this.validNumbers.get(index).size()]); // TODO make better (not performant)
+        return this.validNumbersArray.get(index);
     }
 
     /**
@@ -91,6 +92,7 @@ public class Problem {
         this.preprocessVariableFields();
         this.presolveGrid();
         this.preprocessVariableFieldsUnits();
+        this.validNumbersToArray();
     }
 
     /**
@@ -104,9 +106,9 @@ public class Problem {
      * Calculates for each row, column and block which fields need to be filled
      */
     private void preprocessVariableFieldsUnits() {
-        this.variableFieldsForRows = new Hashtable<>();
-        this.variableFieldsForColumns = new Hashtable<>();
-        this.variableFieldsForBlocks = new Hashtable<>();
+        this.variableFieldsForRows = new HashMap<>();
+        this.variableFieldsForColumns = new HashMap<>();
+        this.variableFieldsForBlocks = new HashMap<>();
 
         for (int unit = 0; unit < this.grid.getSideLength(); unit++) {
             ArrayList<Integer> variableFieldsForRow = new ArrayList<>();
@@ -143,7 +145,7 @@ public class Problem {
      * number on the problems grid
      */
     private void preprocessValidNumbers() {
-        this.validNumbers = new Hashtable<>();
+        this.validNumbers = new HashMap<>();
         for (int index : this.getVariableFields()) {
             Set<Integer> validNumbers = new HashSet<>();
             for (int i = this.grid.getValidMin(); i <= this.grid.getValidMax(); i++) {
@@ -153,12 +155,17 @@ public class Problem {
                 }
                 this.grid.write(index, 0);
             }
-            if (validNumbers.size() == 1) {
-                this.grid.write(index, validNumbers.iterator().next());
-                this.variableFields.remove(index);
-            } else {
-                this.validNumbers.put(index, validNumbers);
-            }
+            this.validNumbers.put(index, validNumbers);
+        }
+    }
+
+    private void validNumbersToArray() {
+        this.validNumbersArray = new HashMap<>();
+        for (Map.Entry<Integer, Set<Integer>> validNumbers : this.validNumbers.entrySet()) {
+            this.validNumbersArray.put(
+                    validNumbers.getKey(),
+                    validNumbers.getValue().toArray(new Integer[validNumbers.getValue().size()])
+            );
         }
     }
 
@@ -167,31 +174,38 @@ public class Problem {
      */
     private void presolveGrid() {
         boolean gridChanged = true;
-        while (gridChanged) {
+        while (gridChanged && this.variableFields.size() > 30) {
             this.preprocessValidNumbers();
             gridChanged = this.insertFixedFields();
         }
+        this.preprocessValidNumbers();
     }
 
     /**
      * Takes each variable field and looks if one of it's valid numbers is unique among its block, row or column.
-     * If so insert the valid number into the grid
+     * If so the valid number gets inserted into the grid
      * @return true iff a number for a field has been inserted
      */
     private boolean insertFixedFields() {
         Iterator<Integer> iterator = this.variableFields.iterator();
         while (iterator.hasNext()) {
             int index = iterator.next();
+            boolean fieldInserted;
 
-            Set<Integer> validNumbersCopy = new HashSet<>(this.validNumbers.get(index));
-            int[] rowIndices = this.grid.getRowForIndex(index);
-            this.removeDoubleValidNumbers(index, validNumbersCopy, rowIndices);
-            int[] columnIndices = this.grid.getColumnForIndex(index);
-            this.removeDoubleValidNumbers(index, validNumbersCopy, columnIndices);
-            int[] blockIndices = this.grid.getBlockForIndex(index);
-            this.removeDoubleValidNumbers(index, validNumbersCopy, blockIndices);
-            if (validNumbersCopy.size() == 1) {
-                this.grid.write(index, validNumbersCopy.iterator().next());
+            fieldInserted = this.insertFixedFieldsForUnit(index, this.grid.getRowForIndex(index));
+            if (fieldInserted) {
+                iterator.remove();
+                return true;
+            }
+
+            fieldInserted = this.insertFixedFieldsForUnit(index, this.grid.getColumnForIndex(index));
+            if (fieldInserted) {
+                iterator.remove();
+                return true;
+            }
+
+            fieldInserted = this.insertFixedFieldsForUnit(index, this.grid.getBlockForIndex(index));
+            if (fieldInserted) {
                 iterator.remove();
                 return true;
             }
@@ -201,15 +215,17 @@ public class Problem {
     }
 
     /**
-     * Intersects a set of valid numbers with all valid numbers from a given unit
-     * @param index The index which belongs to the passed valid numbers
-     * @param validNumbers the set of valid numbers to bisect with all the valid numbers of a given unit
-     * @param unit the unit to take the rest of the valid numbers to all bisect with the passed valid numbers set
+     * Intersects the valid numbers of a field with a given index with all valid numbers from a given unit.
+     * If a exactly one valid number is left over it gets inserted into the grid
+     * @param index The index to look for a valid number for
+     * @param unit the unit from which the valid numbers get taken for the intersection
+     * @return true iff a valid number has been found and inserted
      */
-    private void removeDoubleValidNumbers(int index, Set<Integer> validNumbers, int[] unit) {
+    private boolean insertFixedFieldsForUnit(int index, int[] unit) {
+        Set<Integer> validNumbersCopy = new HashSet<>(this.validNumbers.get(index));
         for (int unitIndex: unit) {
             if (unitIndex != index && this.variableFields.contains(unitIndex)) {
-                Iterator<Integer> iterator = validNumbers.iterator();
+                Iterator<Integer> iterator = validNumbersCopy.iterator();
                 while (iterator.hasNext()) {
                     int validNumber = iterator.next();
                     if (this.validNumbers.get(unitIndex).contains(validNumber)) {
@@ -218,5 +234,11 @@ public class Problem {
                 }
             }
         }
+        if (validNumbersCopy.size() == 1) {
+            this.grid.write(index, validNumbersCopy.iterator().next());
+            return true;
+        }
+
+        return false;
     }
 }
