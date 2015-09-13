@@ -174,7 +174,7 @@ public class Problem {
      */
     private void presolveGrid() {
         boolean gridChanged = true;
-        while (gridChanged && this.variableFields.size() > 30) {
+        while (gridChanged && this.variableFields.size() > -1) {
             this.preprocessValidNumbers();
             gridChanged = this.insertFixedFields();
         }

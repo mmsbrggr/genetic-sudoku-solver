@@ -149,7 +149,8 @@ public class SudokuGrid implements Grid {
             }
             value += this.rows[i].print(this.blockSize) + '\n';
         }
-        return value + line;
+        value += line;
+        return value.trim();
     }
 
     @Override

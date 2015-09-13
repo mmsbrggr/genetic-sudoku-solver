@@ -20,14 +20,31 @@ import java.util.TreeSet;
 public class Population implements Iterable<Individual> {
 
     private double totalFitness;
+    private int totalConflicts;
     private TreeSet<Individual> representation;
+    private int populationSize;
 
     /**
      * Default constructor. Creates a population with random individuals
      */
     public Population() {
         this.totalFitness = 0.0;
+        this.totalConflicts = 0;
         this.representation = new TreeSet<>();
+        this.populationSize = (int) Registry.getInstance().get("population-size");
+    }
+
+    /**
+     * Copy constructor
+     * @param other the population to copy
+     */
+    public Population(Population other) {
+        this();
+        this.totalFitness = other.totalFitness;
+        this.totalConflicts = other.totalConflicts;
+        for (Individual individual : other) {
+            this.representation.add(new Individual(individual));
+        }
     }
 
     /**
@@ -44,8 +61,11 @@ public class Population implements Iterable<Individual> {
      * @param individual the individual to add
      */
     public void add(Individual individual) {
-        this.totalFitness += individual.getFitness();
-        this.representation.add(individual);
+        if (this.representation.size() < this.populationSize) {
+            this.totalFitness += individual.getFitness();
+            this.totalConflicts += individual.getConflicts();
+            this.representation.add(individual);
+        }
     }
 
     /**
@@ -66,11 +86,32 @@ public class Population implements Iterable<Individual> {
     }
 
     /**
+     * @return the average number of conflicts of grids in the population
+     */
+    public double getAvgConflicts() {
+        return this.totalConflicts / (double) this.representation.size();
+    }
+
+    /**
+     * @return the average fitness of grids in the population
+     */
+    public double getAvgFitness() {
+        return this.totalFitness / (double) this.representation.size();
+    }
+
+    /**
+     * @return true iff the population is completely filled with individuals
+     */
+    public boolean isFull() {
+        return this.representation.size() == this.populationSize;
+    }
+
+    /**
      * @param number number of individuals to return
      * @return returns the the best individuals
      */
     public Individual[] get(int number) {
-        if (number > (int) Registry.getInstance().get("population-size")) {
+        if (number > this.populationSize) {
             throw new IllegalArgumentException("Cannot return more individuals than in population.");
         }
         Individual[] elite = new Individual[number];
