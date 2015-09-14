@@ -49,6 +49,7 @@ java -jar genetic-sudoku-solver.jar -e 0.001
 ```
 This would result in the elitism-rate changed to 0.1 %.
 
+
 Parameter | Default value | Name | Description
 ---|---|---|---
 -e | 0.002 | Rate of elitism | Determines how many of the fittest individuals get automatically added to the next generation.
