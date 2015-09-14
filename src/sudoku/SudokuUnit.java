@@ -9,6 +9,8 @@
 
 package sudoku;
 
+import java.util.Arrays;
+
 /**
  * Represents a sudoku unit block (column, row or block)
  */
@@ -20,6 +22,7 @@ final class SudokuUnit implements Unit {
     private int conflicts;
     private int[] representation;
     private int[] usages;
+    private int[] gridIndices;
 
     /**
      * The main constructor
@@ -33,7 +36,22 @@ final class SudokuUnit implements Unit {
         this.occurrences = occurrences;
         this.representation = new int[(rangeMax - rangeMin + 1) * this.occurrences];
         this.usages = new int[rangeMax - rangeMin + 1];
+        this.gridIndices = new int[rangeMax - rangeMin + 1];
         this.conflicts = 0;
+    }
+
+    /**
+     * Copy constructor
+     * @param other the SudokuUnit to copy
+     */
+    public SudokuUnit(SudokuUnit other) {
+        this.rangeMin = other.getRangeMin();
+        this.rangeMax = other.getRangeMax();
+        this.occurrences = other.getOccurrences();
+        this.conflicts = other.getConflicts();
+        this.representation = Arrays.copyOf(other.representation, other.representation.length);
+        this.usages = Arrays.copyOf(other.usages, other.usages.length);
+        this.gridIndices = other.gridIndices;
     }
 
     @Override
@@ -57,18 +75,27 @@ final class SudokuUnit implements Unit {
     }
 
     @Override
-    public void write(int position, int number) throws NotAllowedValueException {
-        if (number < this.rangeMin || this.rangeMax < number) {
-            throw new NotAllowedValueException(this.rangeMin, this.rangeMax);
-        }
+    public int[] getGridIndices() {
+        return this.gridIndices;
+    }
+
+    @Override
+    public void write(int position, int number) {
         int oldNumber = this.representation[position];
         if (oldNumber >= this.getRangeMin()) {
             this.decreaseConflict(oldNumber);
             this.setUsages(oldNumber, this.getUsages(oldNumber) - 1);
         }
         this.representation[position] = number;
-        this.setUsages(number, this.getUsages(number) + 1);
-        this.increaseConflict(number);
+        if (number >= this.getRangeMin()) {
+            this.setUsages(number, this.getUsages(number) + 1);
+            this.increaseConflict(number);
+        }
+    }
+
+    @Override
+    public int read(int position) {
+        return this.representation[position];
     }
 
     @Override
@@ -82,6 +109,16 @@ final class SudokuUnit implements Unit {
             value += String.format("%" + (Math.log10(this.getRangeMax()) + 1) + "d", this.representation[i]) + " ";
         }
         return value + "|";
+    }
+
+    @Override
+    public int[] toArray() {
+        return this.representation;
+    }
+
+    @Override
+    public void setGridIndex(int position, int index) {
+        this.gridIndices[position] = index;
     }
 
     /**
