@@ -14,7 +14,7 @@ After that GSS asks you the side length of a block of the sudoku you want solve.
 ```
 >> Size of a block ('3' for standard sudoku): 3
 ```
-Succeeding GSS requests the sudoku-grid to solve
+Succeeding, GSS requests the sudoku-grid to solve
 ```
 >> Sudoku ('0' for empty fields):
 0 0 0 0 0 0 3 8 0
