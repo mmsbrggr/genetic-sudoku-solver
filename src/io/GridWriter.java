@@ -15,16 +15,16 @@ import sudoku.SudokuGrid;
 /**
  * Class writes to the standard-output
  */
-public class GridWriter {
+public final class GridWriter {
 
-    public static void printHeadline() {
-        String headline = "   _____                 _   _         _____           _       _          \n" +
+    public static void printTitle() {
+        String title = "   _____                 _   _         _____           _       _          \n" +
                 "  / ____|               | | (_)       / ____|         | |     | |         \n" +
                 " | |  __  ___ _ __   ___| |_ _  ___  | (___  _   _  __| | ___ | | ___   _ \n" +
                 " | | |_ |/ _ \\ '_ \\ / _ \\ __| |/ __|  \\___ \\| | | |/ _` |/ _ \\| |/ / | | |\n" +
                 " | |__| |  __/ | | |  __/ |_| | (__   ____) | |_| | (_| | (_) |   <| |_| |\n" +
                 "  \\_____|\\___|_| |_|\\___|\\__|_|\\___| |_____/ \\__,_|\\__,_|\\___/|_|\\_\\\\__,_|\n";
-        System.out.println(headline);
+        System.out.println(title);
         System.out.println("  solver by Marcel Moosbrugger");
         System.out.println();
     }
@@ -73,6 +73,10 @@ public class GridWriter {
         System.out.println(grid);
         System.out.println("Conflicts: " + grid.getConflicts());
         GridWriter.printSpace();
+    }
+
+    public static void printParameterChange(String parameter, Object newValue) {
+        System.out.println(parameter + " set to: " + newValue.toString());
     }
 
     private static void printHeadline(String headline) {

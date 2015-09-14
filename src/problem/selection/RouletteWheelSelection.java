@@ -15,7 +15,7 @@ import problem.habitat.Population;
 /**
  * Implements a standard roulette-wheel selection for a genetic-algorithm
  */
-public class RouletteWheelSelection implements Selection {
+public final class RouletteWheelSelection implements Selection {
 
     @Override
     public Individual select(Population population) {

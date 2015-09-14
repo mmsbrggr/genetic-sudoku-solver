@@ -17,7 +17,7 @@ import java.util.TreeSet;
 /**
  * Represents a population of individuals
  */
-public class Population implements Iterable<Individual> {
+public final class Population implements Iterable<Individual> {
 
     private double totalFitness;
     private int totalConflicts;

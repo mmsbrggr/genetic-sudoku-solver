@@ -18,7 +18,7 @@ import java.util.Arrays;
 /**
  * Represents an individual in the world of sudoku-grids
  */
-public class Individual extends SudokuGrid implements Comparable<Individual> {
+public final class Individual extends SudokuGrid implements Comparable<Individual> {
 
     private Problem problem;
     private int[] gene;

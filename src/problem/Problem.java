@@ -9,6 +9,7 @@
 
 package problem;
 
+import problem.registry.Registry;
 import sudoku.SudokuGrid;
 
 import java.util.*;
@@ -17,7 +18,7 @@ import java.util.*;
  * Represents the problem. Takes an unfinished sudoku-grid
  * and preprocesses different things
  */
-public class Problem {
+public final class Problem {
 
     private SudokuGrid grid;
     private Set<Integer> variableFields;
@@ -159,6 +160,9 @@ public class Problem {
         }
     }
 
+    /**
+     * Converts the valid-numbers set to arrays.
+     */
     private void validNumbersToArray() {
         this.validNumbersArray = new HashMap<>();
         for (Map.Entry<Integer, Set<Integer>> validNumbers : this.validNumbers.entrySet()) {
@@ -174,7 +178,8 @@ public class Problem {
      */
     private void presolveGrid() {
         boolean gridChanged = true;
-        while (gridChanged && this.variableFields.size() > -1) {
+        int leaveEmpty = (int) Registry.getInstance().get("presolver-leave-empty");
+        while (gridChanged && this.variableFields.size() > leaveEmpty) {
             this.preprocessValidNumbers();
             gridChanged = this.insertFixedFields();
         }

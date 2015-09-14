@@ -12,7 +12,7 @@ package io;
 /**
  * Class reads and returns a sudoku-grid
  */
-public class InvalidInputException extends Exception {
+public final class InvalidInputException extends Exception {
 
     private String message;
 

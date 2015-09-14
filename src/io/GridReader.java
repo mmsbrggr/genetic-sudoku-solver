@@ -15,7 +15,7 @@ import java.util.Scanner;
 /**
  * Class reads and returns a sudoku-grid
  */
-public class GridReader {
+public final class GridReader {
 
     /**
      * Reads and returns a sudoku-grid form the standard-input

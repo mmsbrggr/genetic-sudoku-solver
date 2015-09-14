@@ -16,7 +16,7 @@ import problem.registry.Registry;
 /**
  * Mutates an individual by swapping to numbers from either rows
  */
-public class SwapRowMutation implements Mutation {
+public final class SwapRowMutation implements Mutation {
 
     private Problem problem;
 

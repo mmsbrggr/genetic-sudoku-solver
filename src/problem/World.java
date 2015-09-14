@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * Represents the world. Evolves a population till a satisfied
  * solution has been found.
  */
-public class World {
+public final class World {
 
     private Population population;
     private Population backupPopulation;

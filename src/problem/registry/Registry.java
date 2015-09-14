@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * Singleton class to store globally relevant data
  */
-public class Registry {
+public final class Registry {
 
     private static Registry instance;
 

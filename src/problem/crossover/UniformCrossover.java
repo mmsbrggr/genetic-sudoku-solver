@@ -16,7 +16,7 @@ import problem.registry.Registry;
  * Crosses multiple parents to one individual, where for each chromosome
  * each parent has the same probability to be chosen.
  */
-public class UniformCrossover implements Crossover {
+public final class UniformCrossover implements Crossover {
 
     private Individual sculpture;
     private Individual[] parents;
