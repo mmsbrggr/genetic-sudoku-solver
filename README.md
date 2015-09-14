@@ -57,3 +57,11 @@ Parameter | Default value | Name | Description
 -b | 20 | Idle generations before restart | If after this many generation no progress was made, the algorithm gets restarted.
 -n | 2 | Number of parents | The number of individuals (parents) from which a new individual (child) is derived.
 -l | 0 | Number of fields left empty by the presolver | This many fields get left empty by the presolving algorithm, albeit it could now the answer.
+
+
+## Technical details
+### Presolver
+Before the genetic algorithm gets applied, the program uses a simple method to fill in some of the empty fields. More easier puzzles will be solved completely after this step, harder puzzles may even stay the same. If you want to regulate how much of the sudoku-grid is solved or skip the presolving step completely use the '-l' parameter.
+
+### Restarting
+After some number of generation in which no progress was made (can be configured with the '-b' parameter) the genetic algorithm gets restarted. Before each restarting process the fittest individuals get stored. If enough elites have been stored the restart is done with a population containing all stored elites.
