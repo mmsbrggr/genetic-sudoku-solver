@@ -10,7 +10,7 @@ Call the following command in your terminal to start the program.
 ```
 java -jar genetic-sudoku-solver.jar
 ```
-After that GSS asks you the side length of a block of the sudoku you want be solved. Here you type '3' for a standard sudoku. For bigger sudokus you put e.g. '4' for a 16x16 puzzle or '5' for a 25x25 puzzle.
+After that GSS asks you the side length of a block of the sudoku you want solve. Here you type '3' for a standard sudoku. For bigger sudokus you put e.g. '4' for a 16x16 puzzle or '5' for a 25x25 puzzle.
 ```
 >> Size of a block ('3' for standard sudoku): 3
 ```
