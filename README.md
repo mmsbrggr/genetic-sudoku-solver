@@ -41,3 +41,19 @@ For a 9x9-sudoku you could alternitavely omit the spaces between the numbers.
 604072000
 ```
 As soon as you end your input with the EOF-character the algorithm starts solving your sudoku.
+
+## Parameters
+You can tweak the behaviour of the GSS with a few parameters. The parameters get passed to the program on startup.
+```
+java -jar genetic-sudoku-solver.jar -e 0.001
+```
+This would result in the elitism-rate changed to 0.1 %.
+
+Parameter | Default value | Name | Description
+---|---|---|---
+-e | 0.002 | Rate of elitism | Determines how many of the fittest individuals get automatically added to the next generation.
+-m | 0.1 | Rate of mutation | The probability of an individual to mutate.
+-p | 1000 | Population size | The number of individuals in a single population.
+-b | 20 | Idle generations before restart | If after this many generation no progress was made, the algorithm gets restarted.
+-n | 2 | Number of parents | The number of individuals (parents) from which a new individual (child) is derived.
+-l | 0 | Number of fields left empty by the presolver | This many fields get left empty by the presolving algorithm, albeit it could now the answer.
