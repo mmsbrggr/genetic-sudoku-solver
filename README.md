@@ -1,6 +1,6 @@
 # Genetic sudoku solver
 
-GSS is an approach of solving sudokus with a genetic algorithm. The project is more of educational purpose, as Java doesn't allow the most performant implementation of such an algorithm, but greatly illustrates the architecture of such an algorithm. Nevertheless GSS solves most sudokus in a decent time. Additionally to standard 9x9-sudokus, the program is able to solve bigger sudokus like e.g 16x16 or 25x25.
+GSS is an approach of solving sudokus with a genetic algorithm. The project is more of educational purpose, as Java doesn't allow the most performant implementation, but greatly illustrates the architecture of such an algorithm. Nevertheless GSS solves most sudokus in a decent time. Additionally to standard 9x9-sudokus, the program is able to solve bigger sudokus like e.g 16x16 or 25x25.
 
 ## Download
 You can either clone this repository or download the jar-file by clicking [here](https://github.com/marcelmoosbrugger/genetic-sudoku-solver/raw/master/genetic-sudoku-solver.jar).
