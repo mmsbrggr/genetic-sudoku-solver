@@ -62,7 +62,7 @@ Parameter | Default value | Name | Description
 
 ## Technical details
 ### Presolver
-Before the genetic algorithm gets applied, the program uses a simple method to fill in some of the empty fields. More easier puzzles will be solved completely after this step, harder puzzles may even stay the same. If you want to regulate how much of the sudoku-grid is solved or skip the presolving step completely use the '-l' parameter.
+Before the genetic algorithm gets applied, the program uses a simple method to fill in some of the empty fields. More easier puzzles will be solved completely after this step, harder puzzles may even stay the same. If you want to regulate how much of the sudoku-grid is solved or skip the presolving step completely, use the '-l' parameter.
 
 ### Restarting
-After some number of generation in which no progress was made (can be configured with the '-b' parameter) the genetic algorithm gets restarted. Before each restarting process the fittest individuals get stored. If enough elites have been stored the restart is done with a population containing all stored elites.
+After some number of generations in which no progress was made (can be configured with the '-b' parameter), the genetic algorithm gets restarted. Before each restart the fittest individuals get stored. If enough elites have been stored the restart is done with a population containing all stored elites.
