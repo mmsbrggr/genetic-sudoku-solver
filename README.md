@@ -57,7 +57,7 @@ Parameter | Default value | Name | Description
 -p | 1000 | Population size | The number of individuals in a single population.
 -b | 20 | Idle generations before restart | If after this many generation no progress was made, the algorithm gets restarted.
 -n | 2 | Number of parents | The number of individuals (parents) from which a new individual (child) is derived.
--l | 0 | Number of fields left empty by the presolver | This many fields get left empty by the presolving algorithm, albeit it could now the answer.
+-l | 0 | Number of fields left empty by the presolver | This many fields get left empty by the presolving algorithm, albeit it could know the answer.
 
 
 ## Technical details
