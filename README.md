@@ -66,3 +66,6 @@ Before the genetic algorithm gets applied, the program uses a simple method to f
 
 ### Restarting
 After some number of generations in which no progress was made (can be configured with the '-b' parameter), the genetic algorithm gets restarted. Before each restart the fittest individuals get stored. If enough elites have been stored the restart is done with a population containing all stored elites.
+
+### Explanation
+An explanation of genetic algorithms in general can be found on [my blog](http://www.thisurlisfalse.com/solving-sudokus-without-thinking-about-them-well-maybe-a-little/).
